@@ -1,7 +1,8 @@
 (ns my-exercise.home
   (:require [hiccup.page :refer [html5]]
             [ring.util.anti-forgery :refer [anti-forgery-field]]
-            [my-exercise.us-state :as us-state]))
+            [my-exercise.us-state :as us-state]
+            [clj-http.client :as client]))
 
 (defn header [_]
   [:head
@@ -99,7 +100,8 @@
 (defn address-form [_]
   [:div {:class "address-form"}
    [:h1 "Find my next election"]
-   [:form {:action "/search" :method "post"}
+  ;  Changed method to Get
+   [:form {:action "/search" :method "get"}
     (anti-forgery-field)
     [:p "Enter the address where you are registered to vote"]
     [:div
@@ -136,3 +138,7 @@
    (header request)
    (instructions request)
    (address-form request)))
+
+; Created new function that requests an API string
+(defn api-request [request]
+(client/get "https://api.turbovote.org/elections/upcoming?district-divisions=ocd-division/country:us/state:nj,ocd-division/country:us/state:nj/place:newark"))

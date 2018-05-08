@@ -7,6 +7,8 @@
 
 (defroutes app
   (GET "/" [] home/page)
+  ; Create new route that calls the http request
+  (GET "/search" [] home/api-request)
   (route/resources "/")
   (route/not-found "Not found"))
 
